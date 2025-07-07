@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Non-Interactable
+  - Water
+  - UI
+  - Ground
+  - Hazard
+  - Secret
+  - Player
+  - Player Projectile
+  - Enemy
+  - Enemy Projectile
+  - Collectable
+  - Room
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 1817578287
+    locked: 0
+  - name: Hazard
+    uniqueID: 3042128131
+    locked: 0
+  - name: Secret
+    uniqueID: 3016175863
+    locked: 0
+  - name: Collectable
+    uniqueID: 2529487375
+    locked: 0
+  - name: Enemy
+    uniqueID: 3150214853
+    locked: 0
+  - name: Enemy Projectile
+    uniqueID: 3468778729
+    locked: 0
+  - name: Player
+    uniqueID: 3410419479
+    locked: 0
+  - name: Player Projectile
+    uniqueID: 2959281279
+    locked: 0
+  m_RenderingLayers:
+  - Default
