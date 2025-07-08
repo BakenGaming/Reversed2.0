@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour
 
     private void Initialize()
     {
+        GameObject newRoom = Instantiate(levelStatsSO.roomLayout);
+        newRoom.transform.parent = null;
+        newRoom.transform.position = Vector3.zero;
+        spawnPoint = newRoom.GetComponent<RoomController>().GetStartPosition();
         timeManager = GetComponent<TimeManager>();
         TimeManager.OnTimerFinish += StartLevel;
         TimeManager.OnLevelFail += LevelFail;

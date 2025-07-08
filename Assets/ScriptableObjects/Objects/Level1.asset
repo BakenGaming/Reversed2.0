@@ -15,3 +15,4 @@ MonoBehaviour:
   levelName: Level One
   countDownTimer: 3
   maxTimeToComplete: 90
+  roomLayout: {fileID: 4974509472015000151, guid: 23041bdb832d9094baaa9e2438c8419c, type: 3}

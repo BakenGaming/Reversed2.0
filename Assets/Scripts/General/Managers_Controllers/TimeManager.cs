@@ -34,8 +34,7 @@ public class TimeManager : MonoBehaviour
         levelMaxTimeToComplete.text = _levelStats.maxTimeToComplete.ToString();
         currentLevelMaxTime = _levelStats.maxTimeToComplete;
         levelTimer = currentLevelMaxTime;
-        CalculateCurrentTime();
-        levelTimerText.text = minutes.ToString("D1") + ":" + seconds.ToString("D2") + millis.ToString(".##");
+        CalculateandUpdateCurrentTime();
     }
     #endregion
     #region Level Time Functions
@@ -59,8 +58,8 @@ public class TimeManager : MonoBehaviour
     {
         if (GameManager.i.GetIsPaused()) return;
 
-        CalculateCurrentTime();
-        levelTimerText.text = minutes.ToString("D1") + ":" + seconds.ToString("D2") + millis.ToString(".##");
+        CalculateandUpdateCurrentTime();
+
         /*if(GameManager.i.GetCurrentGameTime() < GameManager.i.GetLevelTimes()[1])
         {
             if(!pulsed) gameTimerAnim.SetTrigger("pulse");
@@ -81,12 +80,13 @@ public class TimeManager : MonoBehaviour
         }  */
     }
 
-    private void CalculateCurrentTime()
+    private void CalculateandUpdateCurrentTime()
     {
         minutes = (int)(levelTimer / 60);
         seconds = (int)(levelTimer - (minutes * 60));
         millis = levelTimer - (minutes * 60 + seconds);
-        Debug.Log($"{minutes} {seconds} {millis}");
+        
+        levelTimerText.text = minutes.ToString("D1") + " : " + seconds.ToString("D2") + millis.ToString(".##");
     }
 
     #endregion
