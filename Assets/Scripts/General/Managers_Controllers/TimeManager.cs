@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : MonoBehaviour, IDataPersistence
 {
     #region Events
     public static event Action OnTimerFinish;
@@ -22,13 +22,14 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelMaxTimeToComplete;
     [SerializeField] private TextMeshProUGUI levelAverageTimeText;
     [SerializeField] private TextMeshProUGUI levelTopTimeText;
-    private float currentLevelMaxTime, levelTimer=0, millis;
+    private float currentLevelMaxTime, levelTimer = 0, millis, currentBestTime = 999999f;
     private bool gameStarted = false;
     private int minutes, seconds;
     #endregion
     #region Setup
     public void Initialize(LevelStatsSO _levelStats)
     {
+        LevelEndHandler.OnLevelEndReached += CalculateFinalTime;
         StartCoroutine(BeginCountDown(_levelStats.countDownTimer));
         levelNameText.text = _levelStats.levelName;
         levelMaxTimeToComplete.text = _levelStats.maxTimeToComplete.ToString();
@@ -36,9 +37,13 @@ public class TimeManager : MonoBehaviour
         levelTimer = currentLevelMaxTime;
         CalculateandUpdateCurrentTime();
     }
+    void OnDisable()
+    {
+        LevelEndHandler.OnLevelEndReached -= CalculateFinalTime;
+    }
     #endregion
     #region Level Time Functions
-    private void Update() 
+    private void Update()
     {
         if (gameStarted) UpdateLevelTimer();
 
@@ -47,8 +52,8 @@ public class TimeManager : MonoBehaviour
             levelTimer -= Time.deltaTime;
             //timeToComplete += Time.deltaTime;
         }
-        
-        if(levelTimer <= 0 /*&& !isBabyMode*/) 
+
+        if (levelTimer <= 0 /*&& !isBabyMode*/)
         {
             OnLevelFail?.Invoke();
         }
@@ -85,7 +90,7 @@ public class TimeManager : MonoBehaviour
         minutes = (int)(levelTimer / 60);
         seconds = (int)(levelTimer - (minutes * 60));
         millis = levelTimer - (minutes * 60 + seconds);
-        
+
         levelTimerText.text = minutes.ToString("D1") + " : " + seconds.ToString("D2") + millis.ToString(".##");
     }
 
@@ -114,4 +119,22 @@ public class TimeManager : MonoBehaviour
         gameStarted = true;
     }
     #endregion
+    #region Calculations and Saving
+    private void CalculateFinalTime()
+    {
+        if (levelTimer > currentBestTime) currentBestTime = levelTimer;
+    }
+
+    public void LoadData(GameData _data)
+    {
+        currentBestTime = _data.bestTime;
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.bestTime = currentBestTime;
+    }
+    #endregion
 }
+
+

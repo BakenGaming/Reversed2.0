@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [Header("Level Setup")]
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private LevelStatsSO levelStatsSO;
+
     private GameObject playerGO;
     private TimeManager timeManager;
     private bool isPaused, levelStarted;
@@ -108,5 +109,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject GetPlayerGO() { return playerGO; }
     public bool GetIsPaused() { return isPaused; }
+    #endregion
+
+    #region Saveable Information
+
     #endregion
 }
