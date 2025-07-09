@@ -13,12 +13,19 @@ public class PlayerHandler : MonoBehaviour, IHandler
     [SerializeField] private PlayerStatsSO playerStatsSO;
 
     private StatSystem _statSystem;
+    private bool firstSetup = true;
 
     #endregion
     #region Initialize
     public void Initialize()
     {
+        LevelEndHandler.OnLevelEndReached += ResetSetup;
         SetupPlayer();
+    }
+
+    void OnDisable()
+    {
+        LevelEndHandler.OnLevelEndReached -= ResetSetup;
     }
 
     #endregion
@@ -27,6 +34,7 @@ public class PlayerHandler : MonoBehaviour, IHandler
 
     public void HandleDeath()
     {
+        Instantiate(GameAssets.i.pfBloodParticle, transform.position, Quaternion.identity);
         OnPlayerDeath?.Invoke();
     }
 
@@ -37,7 +45,11 @@ public class PlayerHandler : MonoBehaviour, IHandler
     private void SetupPlayer()
     {
         _statSystem = new StatSystem(playerStatsSO);
-        GetComponent<IInputHandler>().Initialize();
+        if (firstSetup) GetComponent<IInputHandler>().Initialize();
+        else GetComponent<IInputHandler>().ReInitialize();
+        firstSetup = false;
     }
+
+    private void ResetSetup() { firstSetup = true; }
     #endregion
 }

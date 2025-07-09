@@ -48,5 +48,6 @@ MonoBehaviour:
   pfDamagePopup: {fileID: 0}
   pfTextPopup: {fileID: 0}
   pfPlayerObject: {fileID: 9187117150498859108, guid: b482c03cc35615646ace683cb8968bda, type: 3}
+  pfBloodParticle: {fileID: 3737512253167672243, guid: 7fc4a955f3a0fed44a1b5a83ab74ecbc, type: 3}
   audioClipArray: []
   musicTrackArray: []

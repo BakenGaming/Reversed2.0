@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IInputHandler
 {
     public void Initialize();
+    public void ReInitialize();
 }

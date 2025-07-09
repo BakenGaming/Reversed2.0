@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     [Header("Level Setup")]
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private LevelStatsSO levelStatsSO;
-    [SerializeField] private CinemachineCamera cinemachineCamera;
     private GameObject playerGO;
     private TimeManager timeManager;
     private bool isPaused, levelStarted;
@@ -34,6 +33,7 @@ public class GameManager : MonoBehaviour
         PlayerHandler.OnPlayerDeath -= ReSpawnPlayerObject;
         TimeManager.OnTimerFinish -= StartLevel;
         TimeManager.OnLevelFail -= LevelFail;
+        LevelEndHandler.OnLevelEndReached -= PauseGame;
     }
 
     private void Initialize()
@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         timeManager = GetComponent<TimeManager>();
         TimeManager.OnTimerFinish += StartLevel;
         TimeManager.OnLevelFail += LevelFail;
+        LevelEndHandler.OnLevelEndReached += PauseGame;
         isPaused = true;
         SpawnPlayerObject();
     }
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviour
         playerGO.SetActive(false);
         playerGO.transform.position = spawnPoint.position;
         OnPlayerSpawned?.Invoke();
+        playerGO.GetComponent<IHandler>().Initialize();
         playerGO.SetActive(true);
 
     }
@@ -106,7 +108,5 @@ public class GameManager : MonoBehaviour
 
     public GameObject GetPlayerGO() { return playerGO; }
     public bool GetIsPaused() { return isPaused; }
-    
-    public CinemachineCamera GetCinemachineCamera() { return cinemachineCamera; }
     #endregion
 }

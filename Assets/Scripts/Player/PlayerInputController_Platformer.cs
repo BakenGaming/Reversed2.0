@@ -20,15 +20,22 @@ public class PlayerInputController_Platformer : MonoBehaviour, IInputHandler
     private GameControls _controller;
     private InputAction _move, _jump, _pause;
     private Vector2 moveInput;
-    private float jumpBufferCount, jumpBufferLength = .2f, hangTimeCounter, hangTime = .2f;
+    private float jumpBufferCount, jumpBufferLength = .2f, hangTimeCounter, hangTime = .2f, originalGravityScale;
     private bool isPlayerActive=false;
-    
+
     #endregion
-    
+
     #region Initialize
+    public void ReInitialize()
+    {
+        playerRB.gravityScale = originalGravityScale;
+        Initialize();
+    }
     public void Initialize()
     {
+        LevelEndHandler.OnLevelEndReached += DisableControls;
         playerRB = GetComponent<Rigidbody2D>();
+        originalGravityScale = playerRB.gravityScale;
         playerCollider = GetComponent<BoxCollider2D>();
 
         _controller = new GameControls();
@@ -49,18 +56,23 @@ public class PlayerInputController_Platformer : MonoBehaviour, IInputHandler
     }
 
 
-    private void DisableControls() 
+    private void DisableControls()
     {
+        Debug.Log("Disable Controls");
+        playerRB.linearVelocity = Vector2.zero;
+        playerRB.gravityScale = 0;
+        isPlayerActive = false;
         _move.Disable();
         _jump.Disable();
         _pause.Disable();
+        LevelEndHandler.OnLevelEndReached -= DisableControls;
     }
     #endregion
 
     #region Input Handling
     private void HandlePauseInput(InputAction.CallbackContext context)
     {
-        if(!GameManager.i.GetIsPaused()) OnPauseGame?.Invoke();
+        if (!GameManager.i.GetIsPaused()) OnPauseGame?.Invoke();
         else OnUnpauseGame?.Invoke();
     }
 
